@@ -12,9 +12,7 @@
 
     <title>Hash Collections | Bags for Everything You Carry</title>
 
-    <!-- =========================
-         GOOGLE FONTS
-    ========================== -->
+    <!-- GOOGLE FONTS -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
 
@@ -25,23 +23,20 @@
       rel="stylesheet"
     />
 
-    <!-- =========================
-         TAILWIND
-    ========================== -->
+    <!-- TAILWIND -->
 
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 
-    <!-- =========================
-         LUCIDE
-    ========================== -->
+    <!-- LUCIDE -->
 
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
 
-    <!-- =========================
-         STYLES
-    ========================== -->
-
     <style>
+      /* =====================================================
+         KEEP YOUR ENTIRE ORIGINAL CSS HERE
+         FROM YOUR CURRENT index.html
+      ===================================================== */
+
       :root {
         --black: #111312;
         --black-soft: #181b19;
@@ -95,9 +90,7 @@
         font-family: "Manrope", sans-serif;
       }
 
-      /* =========================
-         HEADER
-      ========================== */
+      /* HEADER */
 
       .site-header {
         position: sticky;
@@ -258,9 +251,7 @@
         cursor: pointer;
       }
 
-      /* =========================
-         MOBILE MENU
-      ========================== */
+      /* MOBILE MENU */
 
       .mobile-menu {
         display: none;
@@ -291,9 +282,7 @@
         border-bottom: 0;
       }
 
-      /* =========================
-         HERO
-      ========================== */
+      /* HERO */
 
       .hero {
         position: relative;
@@ -441,9 +430,7 @@
         font-size: 10px;
       }
 
-      /* =========================
-         SECTIONS
-      ========================== */
+      /* SECTIONS */
 
       .section {
         width: min(100% - 40px, 1240px);
@@ -476,9 +463,7 @@
         font-weight: 800;
       }
 
-      /* =========================
-         CATEGORIES
-      ========================== */
+      /* CATEGORIES */
 
       .category-grid {
         display: grid;
@@ -538,9 +523,7 @@
         font-size: 10px;
       }
 
-      /* =========================
-         PRODUCTS
-      ========================== */
+      /* PRODUCTS */
 
       .products-section {
         background: white;
@@ -564,10 +547,6 @@
       .product-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
-      }
-
-      .product-card.hidden-product {
-        display: none;
       }
 
       .product-image-wrap {
@@ -648,9 +627,28 @@
         color: var(--black);
       }
 
-      /* =========================
-         WHY US
-      ========================== */
+      /* FILTER BUTTONS */
+
+      .filter-button {
+        min-height: 34px;
+        padding: 0 13px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .filter-button:hover,
+      .filter-button.active {
+        border-color: var(--black);
+        background: var(--black);
+        color: white;
+      }
+
+      /* WHY US */
 
       .why-section {
         background: var(--black);
@@ -700,9 +698,7 @@
         line-height: 1.7;
       }
 
-      /* =========================
-         ABOUT
-      ========================== */
+      /* ABOUT */
 
       .about-grid {
         display: grid;
@@ -724,9 +720,7 @@
         line-height: 1.8;
       }
 
-      /* =========================
-         NEWSLETTER
-      ========================== */
+      /* NEWSLETTER */
 
       .newsletter {
         background: var(--black-soft);
@@ -799,9 +793,7 @@
         font-size: 11px;
       }
 
-      /* =========================
-         FOOTER
-      ========================== */
+      /* FOOTER */
 
       footer {
         background: #0c0e0d;
@@ -864,9 +856,7 @@
         font-size: 10px;
       }
 
-      /* =========================
-         BAG DRAWER
-      ========================== */
+      /* BAG DRAWER */
 
       .drawer-backdrop {
         position: fixed;
@@ -969,10 +959,22 @@
       .bag-item {
         padding: 15px 0;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 15px;
         border-bottom: 1px solid var(--border);
+      }
+
+      .bag-item-details {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .bag-item-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
       }
 
       .bag-item-name {
@@ -988,6 +990,11 @@
         font-weight: 800;
       }
 
+      .bag-item-total {
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
       .remove-item {
         padding: 5px;
         background: transparent;
@@ -999,6 +1006,50 @@
 
       .remove-item:hover {
         text-decoration: underline;
+      }
+
+      .quantity-controls {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        border: 1px solid var(--border);
+        background: white;
+      }
+
+      .quantity-button {
+        width: 30px;
+        height: 28px;
+        border: 0;
+        background: transparent;
+        color: var(--black);
+        cursor: pointer;
+        font-size: 17px;
+        line-height: 1;
+      }
+
+      .quantity-button:hover {
+        background: var(--cream);
+      }
+
+      .quantity {
+        min-width: 30px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .bag-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        font-size: 15px;
+      }
+
+      .bag-total strong {
+        font-size: 18px;
       }
 
       .drawer-footer {
@@ -1039,9 +1090,7 @@
         background: var(--cream-light);
       }
 
-      /* =========================
-         TOAST
-      ========================== */
+      /* TOAST */
 
       .toast {
         position: fixed;
@@ -1065,9 +1114,7 @@
         opacity: 1;
       }
 
-      /* =========================
-         RESPONSIVE
-      ========================== */
+      /* RESPONSIVE */
 
       @media (max-width: 1050px) {
         .category-grid {
@@ -1355,9 +1402,7 @@
   </head>
 
   <body>
-    <!-- =========================
-         HEADER
-    ========================== -->
+    <!-- HEADER -->
 
     <header class="site-header">
       <div class="header-inner">
@@ -1390,7 +1435,7 @@
 
             <span class="hidden sm:inline"> Bag </span>
 
-            <span id="bag-count"> 0 </span>
+            <span id="bag-count">0</span>
           </button>
 
           <button
@@ -1406,9 +1451,7 @@
       </div>
     </header>
 
-    <!-- =========================
-         MOBILE MENU
-    ========================== -->
+    <!-- MOBILE MENU -->
 
     <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
       <a href="#shop">Shop</a>
@@ -1418,9 +1461,7 @@
     </nav>
 
     <main id="top">
-      <!-- =========================
-           HERO
-      ========================== -->
+      <!-- HERO -->
 
       <section class="hero">
         <img class="hero-image" src="full logo.jpeg" alt="Hash Collections" />
@@ -1455,9 +1496,8 @@
               <i data-lucide="shield-check" width="21"></i>
 
               <div>
-                <strong> Quality Checked </strong>
-
-                <span> Every bag inspected </span>
+                <strong>Quality Checked</strong>
+                <span>Every bag inspected</span>
               </div>
             </div>
 
@@ -1465,9 +1505,8 @@
               <i data-lucide="truck" width="21"></i>
 
               <div>
-                <strong> Fast Delivery </strong>
-
-                <span> Available in Lagos </span>
+                <strong>Fast Delivery</strong>
+                <span>Available in Lagos</span>
               </div>
             </div>
 
@@ -1475,18 +1514,15 @@
               <i data-lucide="credit-card" width="21"></i>
 
               <div>
-                <strong> Secure Payment </strong>
-
-                <span> Simple ordering process </span>
+                <strong>Secure Payment</strong>
+                <span>Simple ordering process</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- =========================
-           CATEGORIES
-      ========================== -->
+      <!-- CATEGORIES -->
 
       <section class="section">
         <div class="section-header">
@@ -1503,7 +1539,6 @@
 
             <div class="category-overlay">
               <h3>Handbags</h3>
-
               <p>Everyday style & function</p>
             </div>
           </a>
@@ -1513,7 +1548,6 @@
 
             <div class="category-overlay">
               <h3>Crossbody Bags</h3>
-
               <p>Stylish & hands-free</p>
             </div>
           </a>
@@ -1523,7 +1557,6 @@
 
             <div class="category-overlay">
               <h3>Travel Bags</h3>
-
               <p>Made for your next journey</p>
             </div>
           </a>
@@ -1533,7 +1566,6 @@
 
             <div class="category-overlay">
               <h3>Gym Bags</h3>
-
               <p>Ready for active days</p>
             </div>
           </a>
@@ -1543,16 +1575,13 @@
 
             <div class="category-overlay">
               <h3>Laptop Bags</h3>
-
               <p>Keep your tech protected</p>
             </div>
           </a>
         </div>
       </section>
 
-      <!-- =========================
-           SHOP
-      ========================== -->
+      <!-- SHOP -->
 
       <section id="shop" class="products-section">
         <div class="section">
@@ -1598,18 +1627,13 @@
             </div>
           </div>
 
-          <!--
-            PRODUCT CARDS ARE NOW GENERATED
-            DYNAMICALLY BY product.js
-          -->
+          <!-- PRODUCT CARDS GENERATED BY product.js -->
 
           <div class="product-grid"></div>
         </div>
       </section>
 
-      <!-- =========================
-           WHY US
-      ========================== -->
+      <!-- WHY US -->
 
       <section id="why-us" class="why-section">
         <div class="section">
@@ -1677,9 +1701,7 @@
         </div>
       </section>
 
-      <!-- =========================
-           ABOUT
-      ========================== -->
+      <!-- ABOUT -->
 
       <section id="about" class="section">
         <div class="about-grid">
@@ -1720,9 +1742,7 @@
         </div>
       </section>
 
-      <!-- =========================
-           NEWSLETTER
-      ========================== -->
+      <!-- NEWSLETTER -->
 
       <section id="contact" class="newsletter">
         <div class="newsletter-inner">
@@ -1756,9 +1776,7 @@
       </section>
     </main>
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+    <!-- FOOTER -->
 
     <footer>
       <div class="footer-inner">
@@ -1770,9 +1788,8 @@
               </span>
 
               <span class="brand-text">
-                <strong> Hash </strong>
-
-                <small> Collections </small>
+                <strong>Hash</strong>
+                <small>Collections</small>
               </span>
             </a>
 
@@ -1786,15 +1803,11 @@
             <p class="footer-title">Quick Links</p>
 
             <div class="footer-links">
-              <a href="#top"> Home </a>
-
-              <a href="#shop"> Shop </a>
-
-              <a href="#why-us"> Why Us </a>
-
-              <a href="#about"> About </a>
-
-              <a href="#contact"> Contact </a>
+              <a href="#top">Home</a>
+              <a href="#shop">Shop</a>
+              <a href="#why-us">Why Us</a>
+              <a href="#about">About</a>
+              <a href="#contact">Contact</a>
             </div>
           </div>
 
@@ -1802,13 +1815,10 @@
             <p class="footer-title">Customer Care</p>
 
             <div class="footer-links">
-              <span> Shipping & Delivery </span>
-
-              <span> Returns & Exchanges </span>
-
-              <span> Product Support </span>
-
-              <span> Ordering Help </span>
+              <span>Shipping & Delivery</span>
+              <span>Returns & Exchanges</span>
+              <span>Product Support</span>
+              <span>Ordering Help</span>
             </div>
           </div>
 
@@ -1832,7 +1842,7 @@
                 Instagram
               </a>
 
-              <span> Lagos, Nigeria </span>
+              <span>Lagos, Nigeria</span>
             </div>
           </div>
         </div>
@@ -1845,9 +1855,7 @@
       </div>
     </footer>
 
-    <!-- =========================
-         BAG DRAWER
-    ========================== -->
+    <!-- BAG DRAWER -->
 
     <div id="bag-backdrop" class="drawer-backdrop"></div>
 
@@ -1891,469 +1899,12 @@
       </div>
     </aside>
 
+    <!-- TOAST -->
+
     <div id="toast" class="toast" aria-live="polite"></div>
 
-    <!-- =========================
-         PRODUCT JAVASCRIPT
-    ========================== -->
+    <!-- ONLY ONE JAVASCRIPT FILE -->
 
     <script src="product.js"></script>
-
-    <!-- =========================
-         MAIN JAVASCRIPT
-    ========================== -->
-
-    <script>
-      /* =========================
-         CONFIGURATION
-      ========================== */
-
-      const WHATSAPP_NUMBER = "2349064007975";
-
-      const BAG_STORAGE_KEY = "hash-collections-bag";
-
-      /* =========================
-         ELEMENTS
-      ========================== */
-
-      const bagButton = document.getElementById("bag-button");
-
-      const bagCount = document.getElementById("bag-count");
-
-      const bagDrawer = document.getElementById("bag-drawer");
-
-      const bagBackdrop = document.getElementById("bag-backdrop");
-
-      const bagItemsElement = document.getElementById("bag-items");
-
-      const closeBagButton = document.getElementById("close-bag");
-
-      const continueShoppingButton =
-        document.getElementById("continue-shopping");
-
-      const whatsappSend = document.getElementById("whatsapp-send");
-
-      const toast = document.getElementById("toast");
-
-      const mobileMenuButton = document.getElementById("mobile-menu-button");
-
-      const mobileMenu = document.getElementById("mobile-menu");
-
-      /* =========================
-         BAG
-      ========================== */
-
-      let bagItems = loadBag();
-
-      function loadBag() {
-        try {
-          const saved = localStorage.getItem(BAG_STORAGE_KEY);
-
-          if (!saved) {
-            return [];
-          }
-
-          const parsed = JSON.parse(saved);
-
-          return Array.isArray(parsed) ? parsed : [];
-        } catch {
-          return [];
-        }
-      }
-
-      function saveBag() {
-        localStorage.setItem(BAG_STORAGE_KEY, JSON.stringify(bagItems));
-      }
-
-      function updateBag() {
-        bagCount.textContent = bagItems.length;
-
-        if (bagItems.length === 0) {
-          bagItemsElement.innerHTML = `
-
-            <div class="empty-bag">
-
-              <i
-                data-lucide="shopping-bag"
-                width="30"
-              ></i>
-
-              <p>
-                Your bag is currently empty.
-              </p>
-
-              <p>
-                Add a bag from the collection
-                and it will appear here.
-              </p>
-
-            </div>
-
-          `;
-
-          whatsappSend.href =
-            "https://wa.me/" +
-            WHATSAPP_NUMBER +
-            "?text=" +
-            encodeURIComponent(
-              "Hi Hash Collections, I'd like to make an enquiry about your bags.",
-            );
-
-          lucide.createIcons();
-
-          return;
-        }
-
-        bagItemsElement.innerHTML = bagItems
-          .map(
-            (item, index) => `
-
-                <div class="bag-item">
-
-                  <div>
-
-                    <p class="bag-item-name">
-                      ${escapeHTML(item.name)}
-                    </p>
-
-                    <p class="bag-item-price">
-                      ₦${escapeHTML(item.price)}
-                    </p>
-
-                  </div>
-
-
-                  <button
-                    type="button"
-                    class="remove-item"
-                    data-index="${index}"
-                  >
-                    Remove
-                  </button>
-
-                </div>
-
-              `,
-          )
-          .join("");
-
-        const message = [
-          "Hi Hash Collections, I'd like to order:",
-
-          "",
-
-          ...bagItems.map((item) => `• ${item.name} - ₦${item.price}`),
-
-          "",
-
-          "Please let me know the next steps.",
-        ].join("\n");
-
-        whatsappSend.href =
-          "https://wa.me/" +
-          WHATSAPP_NUMBER +
-          "?text=" +
-          encodeURIComponent(message);
-
-        document.querySelectorAll(".remove-item").forEach((button) => {
-          button.addEventListener("click", () => {
-            const index = Number(button.dataset.index);
-
-            bagItems.splice(index, 1);
-
-            saveBag();
-
-            updateBag();
-
-            showToast("Item removed");
-          });
-        });
-
-        lucide.createIcons();
-      }
-
-      function addToBag(name, price) {
-        bagItems.push({
-          name,
-
-          price,
-        });
-
-        saveBag();
-
-        updateBag();
-
-        showToast(name + " added to your bag");
-      }
-
-      function escapeHTML(value) {
-        return String(value)
-          .replaceAll("&", "&amp;")
-
-          .replaceAll("<", "&lt;")
-
-          .replaceAll(">", "&gt;")
-
-          .replaceAll('"', "&quot;")
-
-          .replaceAll("'", "&#039;");
-      }
-
-      /* =========================
-         DYNAMIC ADD TO BAG
-      ========================== */
-
-      /*
-        Product cards are now created
-        by product.js, so the buttons
-        do not exist when this script
-        first loads.
-
-        Event delegation lets us detect
-        clicks on dynamically-created
-        Add to Bag buttons.
-      */
-
-      document.addEventListener("click", (event) => {
-        const button = event.target.closest(".add-to-bag");
-
-        if (!button) {
-          return;
-        }
-
-        addToBag(button.dataset.product, button.dataset.price);
-      });
-
-      /* =========================
-         DRAWER
-      ========================== */
-
-      function openBag() {
-        bagDrawer.classList.add("open");
-
-        bagBackdrop.classList.add("open");
-
-        bagDrawer.setAttribute("aria-hidden", "false");
-
-        document.body.style.overflow = "hidden";
-
-        closeBagButton.focus();
-      }
-
-      function closeBag() {
-        bagDrawer.classList.remove("open");
-
-        bagBackdrop.classList.remove("open");
-
-        bagDrawer.setAttribute("aria-hidden", "true");
-
-        document.body.style.overflow = "";
-
-        bagButton.focus();
-      }
-
-      bagButton.addEventListener("click", openBag);
-
-      closeBagButton.addEventListener("click", closeBag);
-
-      continueShoppingButton.addEventListener("click", closeBag);
-
-      bagBackdrop.addEventListener("click", closeBag);
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          if (bagDrawer.classList.contains("open")) {
-            closeBag();
-          }
-
-          if (mobileMenu.classList.contains("open")) {
-            closeMobileMenu();
-          }
-        }
-      });
-
-      /* =========================
-         MOBILE MENU
-      ========================== */
-
-      function openMobileMenu() {
-        mobileMenu.classList.add("open");
-
-        mobileMenuButton.setAttribute("aria-expanded", "true");
-
-        mobileMenuButton.setAttribute("aria-label", "Close navigation");
-
-        mobileMenuButton.innerHTML = '<i data-lucide="x" width="24"></i>';
-
-        lucide.createIcons();
-      }
-
-      function closeMobileMenu() {
-        mobileMenu.classList.remove("open");
-
-        mobileMenuButton.setAttribute("aria-expanded", "false");
-
-        mobileMenuButton.setAttribute("aria-label", "Open navigation");
-
-        mobileMenuButton.innerHTML = '<i data-lucide="menu" width="24"></i>';
-
-        lucide.createIcons();
-      }
-
-      mobileMenuButton.addEventListener("click", () => {
-        if (mobileMenu.classList.contains("open")) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      });
-
-      document.querySelectorAll("#mobile-menu a").forEach((link) => {
-        link.addEventListener("click", closeMobileMenu);
-      });
-
-      /* =========================
-         FILTER BUTTON STYLES
-      ========================== */
-
-      const filterStyle = document.createElement("style");
-
-      filterStyle.textContent = `
-
-        .filter-button {
-
-          min-height: 34px;
-
-          padding: 0 13px;
-
-          border: 1px solid var(--border);
-
-          background: transparent;
-
-          color: var(--muted);
-
-          font-size: 11px;
-
-          font-weight: 700;
-
-          cursor: pointer;
-
-          transition: all .2s ease;
-
-        }
-
-
-        .filter-button:hover,
-
-        .filter-button.active {
-
-          border-color: var(--black);
-
-          background: var(--black);
-
-          color: white;
-
-        }
-
-      `;
-
-      document.head.appendChild(filterStyle);
-
-      /* =========================
-         NEWSLETTER
-      ========================== */
-
-      const newsletterForm = document.getElementById("newsletter-form");
-
-      const newsletterInput = document.getElementById("newsletter-email");
-
-      const newsletterMessage = document.getElementById("newsletter-message");
-
-      const newsletterSubmit = document.getElementById("newsletter-submit");
-
-      const NEWSLETTER_STORAGE_KEY = "hash-collections-newsletter";
-
-      function getNewsletterEmails() {
-        try {
-          return JSON.parse(localStorage.getItem(NEWSLETTER_STORAGE_KEY)) || [];
-        } catch {
-          return [];
-        }
-      }
-
-      newsletterForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const email = newsletterInput.value.trim();
-
-        if (!newsletterInput.checkValidity() || !email) {
-          newsletterMessage.textContent = "Please enter a valid email address.";
-
-          newsletterMessage.style.color = "#ef8d8d";
-
-          newsletterInput.focus();
-
-          return;
-        }
-
-        const emails = getNewsletterEmails();
-
-        const exists = emails.some(
-          (item) => item.toLowerCase() === email.toLowerCase(),
-        );
-
-        if (exists) {
-          newsletterMessage.textContent = "This email is already subscribed.";
-
-          newsletterMessage.style.color = "var(--gold-light)";
-
-          return;
-        }
-
-        emails.push(email);
-
-        localStorage.setItem(NEWSLETTER_STORAGE_KEY, JSON.stringify(emails));
-
-        newsletterInput.value = "";
-
-        newsletterMessage.textContent = "You're subscribed. Thank you.";
-
-        newsletterMessage.style.color = "var(--gold-light)";
-
-        newsletterSubmit.disabled = true;
-
-        setTimeout(() => {
-          newsletterSubmit.disabled = false;
-        }, 1000);
-      });
-
-      /* =========================
-         TOAST
-      ========================== */
-
-      let toastTimer;
-
-      function showToast(message) {
-        toast.textContent = message;
-
-        toast.classList.add("show");
-
-        clearTimeout(toastTimer);
-
-        toastTimer = setTimeout(() => {
-          toast.classList.remove("show");
-        }, 2200);
-      }
-
-      /* =========================
-         INITIALISE
-      ========================== */
-
-      updateBag();
-
-      document.addEventListener("DOMContentLoaded", () => {
-        lucide.createIcons();
-      });
-    </script>
   </body>
 </html>

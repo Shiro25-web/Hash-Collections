@@ -3,6 +3,10 @@
    PRODUCT DATA + SHOPPING BAG
 ========================================== */
 
+/* ==========================================
+   PRODUCT DATA
+========================================== */
+
 const products = [
   {
     id: 1,
@@ -23,7 +27,7 @@ const products = [
     description: "Spacious everyday tote for your essentials.",
     image: "image copy.png",
     alt: "Tote Bag",
-    price: 21500,
+    price: 11500,
   },
 
   {
@@ -106,62 +110,111 @@ const products = [
   {
     id: 10,
     category: "everyday",
-    categoryLabel: "waist Bag",
+    categoryLabel: "Waist Bag",
     name: "The Side Sling",
     description: "Slim crossbody design with adjustable strap.",
     image: "waist bag.webp",
-    alt: "waist bag",
+    alt: "Waist Bag",
     price: 13500,
   },
 ];
 
 /* ==========================================
-   PRODUCT DISPLAY
+   ELEMENTS
 ========================================== */
 
 const productGrid = document.querySelector(".product-grid");
+
+const filterButtons = document.querySelectorAll(".filter-button");
+
+const bagButton = document.getElementById("bag-button");
+
+const bagCount = document.getElementById("bag-count");
+
+const bagDrawer = document.getElementById("bag-drawer");
+
+const bagBackdrop = document.getElementById("bag-backdrop");
+
+const bagItemsElement = document.getElementById("bag-items");
+
+const closeBagButton = document.getElementById("close-bag");
+
+const continueShoppingButton = document.getElementById("continue-shopping");
+
+const whatsappSend = document.getElementById("whatsapp-send");
+
+const toast = document.getElementById("toast");
+
+const mobileMenuButton = document.getElementById("mobile-menu-button");
+
+const mobileMenu = document.getElementById("mobile-menu");
+
+/* ==========================================
+   CONFIGURATION
+========================================== */
+
+const WHATSAPP_NUMBER = "2349064007975";
+
+const BAG_STORAGE_KEY = "hash-collections-bag";
+
+const NEWSLETTER_STORAGE_KEY = "hash-collections-newsletter";
+
+/* ==========================================
+   PRICE FORMAT
+========================================== */
 
 function formatPrice(price) {
   return `₦${Number(price).toLocaleString()}`;
 }
 
+/* ==========================================
+   CREATE PRODUCT CARD
+========================================== */
+
 function createProductCard(product) {
   const card = document.createElement("article");
 
   card.className = "product-card";
+
   card.dataset.category = product.category;
 
   card.innerHTML = `
+
     <div class="product-image-wrap">
 
       <img
         class="product-image"
         src="${product.image}"
-        alt="${product.alt}"
+        alt="${escapeHTML(product.alt)}"
         loading="lazy"
       />
 
     </div>
 
+
     <div class="product-info">
 
       <p class="product-category">
-        ${product.categoryLabel}
+        ${escapeHTML(product.categoryLabel)}
       </p>
+
 
       <h3 class="product-name heading">
-        ${product.name}
+        ${escapeHTML(product.name)}
       </h3>
 
+
       <p class="product-description">
-        ${product.description}
+        ${escapeHTML(product.description)}
       </p>
+
 
       <div class="product-bottom">
 
         <span class="price">
           ${formatPrice(product.price)}
         </span>
+
 
         <button
           type="button"
@@ -174,24 +227,33 @@ function createProductCard(product) {
       </div>
 
     </div>
+
   `;
 
   return card;
 }
 
+/* ==========================================
+   DISPLAY PRODUCTS
+========================================== */
+
 function displayProducts(productList) {
+  if (!productGrid) {
+    return;
+  }
+
   productGrid.innerHTML = "";
 
   productList.forEach((product) => {
     productGrid.appendChild(createProductCard(product));
   });
+
+  refreshIcons();
 }
 
 /* ==========================================
    PRODUCT FILTER
 ========================================== */
-
-const filterButtons = document.querySelectorAll(".filter-button");
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -219,8 +281,6 @@ filterButtons.forEach((button) => {
    SHOPPING BAG
 ========================================== */
 
-const BAG_STORAGE_KEY = "hash-collections-bag";
-
 let bag = loadBag();
 
 function loadBag() {
@@ -233,7 +293,26 @@ function loadBag() {
 
     const parsed = JSON.parse(saved);
 
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    /*
+      This also makes the bag compatible
+      with the older bag format.
+    */
+
+    return parsed.map((item) => {
+      return {
+        id: Number(item.id) || null,
+
+        name: item.name || "",
+
+        price: Number(item.price) || 0,
+
+        quantity: Number(item.quantity) > 0 ? Number(item.quantity) : 1,
+      };
+    });
   } catch (error) {
     console.error("Could not load shopping bag:", error);
 
@@ -253,6 +332,8 @@ function addToBag(productId) {
   const product = products.find((item) => item.id === Number(productId));
 
   if (!product) {
+    console.error("Product not found:", productId);
+
     return;
   }
 
@@ -280,7 +361,7 @@ function addToBag(productId) {
 }
 
 /* ==========================================
-   CHANGE QUANTITY
+   INCREASE QUANTITY
 ========================================== */
 
 function increaseQuantity(productId) {
@@ -296,6 +377,10 @@ function increaseQuantity(productId) {
 
   updateBag();
 }
+
+/* ==========================================
+   DECREASE QUANTITY
+========================================== */
 
 function decreaseQuantity(productId) {
   const item = bag.find((product) => product.id === Number(productId));
@@ -316,13 +401,15 @@ function decreaseQuantity(productId) {
 }
 
 /* ==========================================
-   REMOVE ITEM
+   REMOVE FROM BAG
 ========================================== */
 
 function removeFromBag(productId) {
-  const item = bag.find((product) => product.id === Number(productId));
+  const id = Number(productId);
 
-  bag = bag.filter((product) => product.id !== Number(productId));
+  const item = bag.find((product) => product.id === id);
+
+  bag = bag.filter((product) => product.id !== id);
 
   saveBag();
 
@@ -334,33 +421,34 @@ function removeFromBag(productId) {
 }
 
 /* ==========================================
-   BAG TOTALS
+   BAG ITEM COUNT
 ========================================== */
 
 function getBagItemCount() {
   return bag.reduce((total, item) => total + item.quantity, 0);
 }
 
+/* ==========================================
+   BAG TOTAL
+========================================== */
+
 function getBagTotal() {
   return bag.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
 /* ==========================================
-   UPDATE BAG UI
+   UPDATE BAG
 ========================================== */
 
 function updateBag() {
-  const bagCount = document.getElementById("bag-count");
-
-  const bagItemsElement = document.getElementById("bag-items");
-
-  const whatsappSend = document.getElementById("whatsapp-send");
-
   if (!bagCount || !bagItemsElement) {
     return;
   }
 
-  /* BAG COUNT */
+  /*
+    This is the number displayed
+    inside the gold circle.
+  */
 
   bagCount.textContent = getBagItemCount();
 
@@ -419,9 +507,11 @@ function updateBag() {
               ${escapeHTML(item.name)}
             </p>
 
+
             <p class="bag-item-price">
               ${formatPrice(item.price)}
             </p>
+
 
             <div class="quantity-controls">
 
@@ -434,9 +524,11 @@ function updateBag() {
                 −
               </button>
 
+
               <span class="quantity">
                 ${item.quantity}
               </span>
+
 
               <button
                 type="button"
@@ -458,6 +550,7 @@ function updateBag() {
               ${formatPrice(itemTotal)}
             </strong>
 
+
             <button
               type="button"
               class="remove-item"
@@ -476,8 +569,6 @@ function updateBag() {
 
   /* TOTAL */
 
-  const total = getBagTotal();
-
   bagItemsElement.insertAdjacentHTML(
     "beforeend",
     `
@@ -489,7 +580,7 @@ function updateBag() {
         </span>
 
         <strong>
-          ${formatPrice(total)}
+          ${formatPrice(getBagTotal())}
         </strong>
 
       </div>
@@ -507,10 +598,8 @@ function updateBag() {
 }
 
 /* ==========================================
-   WHATSAPP ORDER
+   WHATSAPP ORDER MESSAGE
 ========================================== */
-
-const WHATSAPP_NUMBER = "2349064007975";
 
 function createOrderMessage() {
   const lines = ["Hi Hash Collections, I'd like to order:", ""];
@@ -539,7 +628,7 @@ function createWhatsAppLink(message) {
 }
 
 /* ==========================================
-   BUTTON EVENTS
+   CLICK EVENTS
 ========================================== */
 
 document.addEventListener("click", (event) => {
@@ -585,6 +674,230 @@ document.addEventListener("click", (event) => {
 });
 
 /* ==========================================
+   BAG DRAWER
+========================================== */
+
+function openBag() {
+  if (!bagDrawer || !bagBackdrop) {
+    return;
+  }
+
+  updateBag();
+
+  bagDrawer.classList.add("open");
+
+  bagBackdrop.classList.add("open");
+
+  bagDrawer.setAttribute("aria-hidden", "false");
+
+  document.body.style.overflow = "hidden";
+
+  if (closeBagButton) {
+    closeBagButton.focus();
+  }
+}
+
+function closeBag() {
+  if (!bagDrawer || !bagBackdrop) {
+    return;
+  }
+
+  bagDrawer.classList.remove("open");
+
+  bagBackdrop.classList.remove("open");
+
+  bagDrawer.setAttribute("aria-hidden", "true");
+
+  document.body.style.overflow = "";
+
+  if (bagButton) {
+    bagButton.focus();
+  }
+}
+
+if (bagButton) {
+  bagButton.addEventListener("click", openBag);
+}
+
+if (closeBagButton) {
+  closeBagButton.addEventListener("click", closeBag);
+}
+
+if (continueShoppingButton) {
+  continueShoppingButton.addEventListener("click", closeBag);
+}
+
+if (bagBackdrop) {
+  bagBackdrop.addEventListener("click", closeBag);
+}
+
+/* ==========================================
+   ESCAPE KEY
+========================================== */
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") {
+    return;
+  }
+
+  if (bagDrawer && bagDrawer.classList.contains("open")) {
+    closeBag();
+  }
+
+  if (mobileMenu && mobileMenu.classList.contains("open")) {
+    closeMobileMenu();
+  }
+});
+
+/* ==========================================
+   MOBILE MENU
+========================================== */
+
+function openMobileMenu() {
+  if (!mobileMenu || !mobileMenuButton) {
+    return;
+  }
+
+  mobileMenu.classList.add("open");
+
+  mobileMenuButton.setAttribute("aria-expanded", "true");
+
+  mobileMenuButton.setAttribute("aria-label", "Close navigation");
+
+  mobileMenuButton.innerHTML = '<i data-lucide="x" width="24"></i>';
+
+  refreshIcons();
+}
+
+function closeMobileMenu() {
+  if (!mobileMenu || !mobileMenuButton) {
+    return;
+  }
+
+  mobileMenu.classList.remove("open");
+
+  mobileMenuButton.setAttribute("aria-expanded", "false");
+
+  mobileMenuButton.setAttribute("aria-label", "Open navigation");
+
+  mobileMenuButton.innerHTML = '<i data-lucide="menu" width="24"></i>';
+
+  refreshIcons();
+}
+
+if (mobileMenuButton) {
+  mobileMenuButton.addEventListener("click", () => {
+    if (mobileMenu.classList.contains("open")) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
+    }
+  });
+}
+
+document.querySelectorAll("#mobile-menu a").forEach((link) => {
+  link.addEventListener("click", closeMobileMenu);
+});
+
+/* ==========================================
+   NEWSLETTER
+========================================== */
+
+const newsletterForm = document.getElementById("newsletter-form");
+
+const newsletterInput = document.getElementById("newsletter-email");
+
+const newsletterMessage = document.getElementById("newsletter-message");
+
+const newsletterSubmit = document.getElementById("newsletter-submit");
+
+function getNewsletterEmails() {
+  try {
+    const saved = localStorage.getItem(NEWSLETTER_STORAGE_KEY);
+
+    if (!saved) {
+      return [];
+    }
+
+    const parsed = JSON.parse(saved);
+
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+if (newsletterForm) {
+  newsletterForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const email = newsletterInput.value.trim();
+
+    if (!newsletterInput.checkValidity() || !email) {
+      newsletterMessage.textContent = "Please enter a valid email address.";
+
+      newsletterMessage.style.color = "#ef8d8d";
+
+      newsletterInput.focus();
+
+      return;
+    }
+
+    const emails = getNewsletterEmails();
+
+    const exists = emails.some(
+      (item) => item.toLowerCase() === email.toLowerCase(),
+    );
+
+    if (exists) {
+      newsletterMessage.textContent = "This email is already subscribed.";
+
+      newsletterMessage.style.color = "var(--gold-light)";
+
+      return;
+    }
+
+    emails.push(email);
+
+    localStorage.setItem(NEWSLETTER_STORAGE_KEY, JSON.stringify(emails));
+
+    newsletterInput.value = "";
+
+    newsletterMessage.textContent = "You're subscribed. Thank you.";
+
+    newsletterMessage.style.color = "var(--gold-light)";
+
+    newsletterSubmit.disabled = true;
+
+    setTimeout(() => {
+      newsletterSubmit.disabled = false;
+    }, 1000);
+  });
+}
+
+/* ==========================================
+   TOAST
+========================================== */
+
+let toastTimer;
+
+function showToast(message) {
+  if (!toast) {
+    return;
+  }
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+/* ==========================================
    ESCAPE HTML
 ========================================== */
 
@@ -602,29 +915,7 @@ function escapeHTML(value) {
 }
 
 /* ==========================================
-   TOAST
-========================================== */
-
-function showToast(message) {
-  const toast = document.getElementById("toast");
-
-  if (!toast) {
-    return;
-  }
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  clearTimeout(window.hashToastTimer);
-
-  window.hashToastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2200);
-}
-
-/* ==========================================
-   LUCIDE ICONS
+   LUCIDE
 ========================================== */
 
 function refreshIcons() {
@@ -632,104 +923,6 @@ function refreshIcons() {
     lucide.createIcons();
   }
 }
-
-/* ==========================================
-   CART CSS
-   Injected automatically
-========================================== */
-
-const cartStyle = document.createElement("style");
-
-cartStyle.textContent = `
-
-  .bag-item {
-    align-items: flex-start;
-  }
-
-  .bag-item-details {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .bag-item-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-  }
-
-  .bag-item-total {
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  .quantity-controls {
-    display: inline-flex;
-    align-items: center;
-    margin-top: 10px;
-    border: 1px solid var(--border);
-    background: white;
-  }
-
-  .quantity-button {
-    width: 30px;
-    height: 28px;
-    border: 0;
-    background: transparent;
-    color: var(--black);
-    cursor: pointer;
-    font-size: 17px;
-    line-height: 1;
-  }
-
-  .quantity-button:hover {
-    background: var(--cream);
-  }
-
-  .quantity {
-    min-width: 30px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  .bag-total {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid var(--border);
-    font-size: 15px;
-  }
-
-  .bag-total strong {
-    font-size: 18px;
-  }
-
-  @media (max-width: 420px) {
-
-    .bag-items {
-      padding: 18px;
-    }
-
-    .drawer-footer {
-      padding: 18px;
-    }
-
-    .bag-item {
-      gap: 10px;
-    }
-
-    .bag-item-actions {
-      align-items: flex-end;
-    }
-
-  }
-
-`;
-
-document.head.appendChild(cartStyle);
 
 /* ==========================================
    INITIALISE
